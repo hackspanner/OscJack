@@ -23,13 +23,16 @@
 //
 using System;
 
+using UnityEngine;
+using Object = System.Object;
+
 namespace OscJack
 {
     // OSC master directory class
     // Provides the interface for the OSC master directory.
     public static class OscMaster
     {
-        // UDP listening port number list
+		// UDP listening port number list
         static int[] listenPortList = { 9000 };
 
         // Determines whether any data has arrived to a given address.
@@ -49,12 +52,32 @@ namespace OscJack
         {
             _directory.ClearData(address);
         }
+        
+        //Sends Osc message
+        public static void SendData(string data)
+        {
+			OscMessage oscMessage = OscMessage.StringToOscMessage(data);
+//			Debug.Log(oscMessage);
+			//MonoBehaviour.print(oscMessage.values.Count);
+			Debug.Log("mono is working");
+
+			byte[] packet = new byte[1000];
+			int length = OscMessage.OscMessageToPacket( oscMessage, packet, 1000 );
+			//Debug.Log(packet);
+//			/Debug.Log(length);
+			client.SendPacket( packet, length);
+        }
 
         // Returns a reference to the master directory instance.
         public static OscDirectory MasterDirectory {
             get { return _directory; }
         }
 
+		public static OscClient MasterClient {
+			get { return client; }
+		}
+			
         static OscDirectory _directory = new OscDirectory(listenPortList);
+		static OscClient client = new OscClient("127.0.0.1", 8000);
     }
 }
