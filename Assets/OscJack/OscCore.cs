@@ -53,17 +53,17 @@ namespace OscJack
 			this.values = new ArrayList ();
 		}
 
-		//        public override string ToString ()
-		//        {
-		//            var temp = address + ":";
-		//            if (data.Length > 0)
-		//            {
-		//                for (var i = 0; i < data.Length - 1; i++)
-		//                    temp += data[i] + ",";
-		//                temp += data[data.Length - 1];
-		//            }
-		//            return temp;
-		//        }
+		public override string ToString ()
+		{
+			var temp = address + ":";
+			if (data.Length > 0) {
+				for (var i = 0; i < data.Length - 1; i++)
+					temp += data [i] + ",";
+				temp += data [data.Length - 1];
+			}
+			return temp;
+		}
+
 		public static OscMessage StringToOscMessage (string message)
 		{
 			OscMessage oM = new OscMessage ();

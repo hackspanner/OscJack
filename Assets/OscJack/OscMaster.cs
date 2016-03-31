@@ -57,8 +57,7 @@ namespace OscJack
         public static void SendData(string data)
         {
 			OscMessage oscMessage = OscMessage.StringToOscMessage(data);
-//			Debug.Log(oscMessage);
-			//MonoBehaviour.print(oscMessage.values.Count);
+			Debug.Log(oscMessage.values);
 			Debug.Log("mono is working");
 
 			byte[] packet = new byte[1000];
