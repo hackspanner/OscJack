@@ -11,6 +11,6 @@ public class Tester : MonoBehaviour
             transform.localScale = Vector3.one * loud;
             Debug.Log(loud);
         }
-		OscMaster.SendData("/test/test");
+		OscMaster.SendData("/test/test 1");
     }
 }

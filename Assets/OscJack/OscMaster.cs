@@ -56,12 +56,12 @@ namespace OscJack
         //Sends Osc message
         public static void SendData(string data)
         {
-			OscMessage oscMessage = OscMessage.StringToOscMessage(data);
-			Debug.Log(oscMessage.values);
+			OscMessageSend oscMessage = OscMessageSend.StringToOscMessage(data);
+			Debug.Log(oscMessage.values.Count);
 			Debug.Log("mono is working");
 
 			byte[] packet = new byte[1000];
-			int length = OscMessage.OscMessageToPacket( oscMessage, packet, 1000 );
+			int length = OscMessageSend.OscMessageToPacket( oscMessage, packet, 1000 );
 			//Debug.Log(packet);
 //			/Debug.Log(length);
 			client.SendPacket( packet, length);

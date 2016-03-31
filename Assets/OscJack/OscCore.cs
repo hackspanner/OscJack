@@ -37,37 +37,40 @@ namespace OscJack
 	{
 		public string address;
 		public object[] data;
-		public ArrayList values;
 
-		public OscMessage (object[] data)
-		{
-			this.address = null;
-			this.data = data;
-			this.values = new ArrayList ();
-		}
-
-		public OscMessage (string address, object[] data)
+		public OscMessage(string address, object[] data)
 		{
 			this.address = address;
 			this.data = data;
-			this.values = new ArrayList ();
 		}
 
 		public override string ToString ()
 		{
 			var temp = address + ":";
-			if (data.Length > 0) {
+			if (data.Length > 0)
+			{
 				for (var i = 0; i < data.Length - 1; i++)
-					temp += data [i] + ",";
-				temp += data [data.Length - 1];
+					temp += data[i] + ",";
+				temp += data[data.Length - 1];
 			}
 			return temp;
 		}
+	}
 
-		public static OscMessage StringToOscMessage (string message)
+	public class OscMessageSend
+	{
+		public string address;
+		public ArrayList values;
+
+		public OscMessageSend()
 		{
-			OscMessage oM = new OscMessage ();
-//			Debug.Log(oM.values.Count);
+			values = new ArrayList();
+		}
+
+		public static OscMessageSend StringToOscMessage (string message)
+		{
+			OscMessageSend oM = new OscMessageSend ();
+			//			Debug.Log(oM.values.Count);
 			// Console.WriteLine("Splitting " + message);
 			string[] ss = message.Split (new char[] { ' ' });
 			IEnumerator sE = ss.GetEnumerator ();
@@ -122,14 +125,14 @@ namespace OscJack
 			return oM;
 		}
 
-		public static int OscMessageToPacket (OscMessage oscM, byte[] packet, int length)
+		public static int OscMessageToPacket (OscMessageSend oscM, byte[] packet, int length)
 		{
 			return OscMessageToPacket (oscM, packet, 0, length);
 		}
-    
-    
+
+
 		// Creates an array of bytes from a single OscMessage.  Used internally.
-		private static int OscMessageToPacket (OscMessage oscM, byte[] packet, int start, int length)
+		private static int OscMessageToPacket (OscMessageSend oscM, byte[] packet, int start, int length)
 		{
 			int index = start;
 			index = InsertString (oscM.address, packet, index, length);
@@ -138,7 +141,7 @@ namespace OscJack
 				tag.Append (",");
 				int tagIndex = index;
 				index += PadSize (2 + oscM.values.Count);
-    
+
 				foreach (object o in oscM.values) {
 					if (o is int) {
 						int i = (int)o;
@@ -191,7 +194,7 @@ namespace OscJack
 			}
 			return index;
 		}
-    
+
 		// Takes a length and returns what it would be if padded to the nearest 4 bytes.
 		private static int PadSize (int rawSize)
 		{
@@ -201,7 +204,6 @@ namespace OscJack
 			else
 				return rawSize + (4 - pad);
 		}
-
 	}
 
 	// OSC packet parser

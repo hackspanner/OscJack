@@ -25,6 +25,9 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
+using UnityEngine;
+using Object = System.Object;
+
 namespace OscJack
 {
     // OSC over UDP client class
@@ -35,8 +38,10 @@ namespace OscJack
 
 		public OscClient(string sendAddress, int sendPort)
         {   
+			Debug.Log(sendPort);
 			_sendPoint = new IPEndPoint(IPAddress.Parse(sendAddress), sendPort);
-			_udpSender = new UdpClient(_sendPoint);
+			_udpSender = new UdpClient();
+			_udpSender.Connect(_sendPoint);
         }
 
         public void Close()
